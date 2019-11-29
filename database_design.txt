@@ -9,3 +9,7 @@ CREATE TABLE users(
 );
 
 INSERT INTO users (user_id, first_name, last_name, username, password) VALUES (0, "Bob", "Joe", "bigjoe", "coolguy");
+heroku  https://git.heroku.com/lit-mountain-29464.git (fetch)
+heroku  https://git.heroku.com/lit-mountain-29464.git (push)
+origin  https://github.com/Bluhm-Alexander/CS313_Node_Js_Project.git (fetch)
+origin  https://github.com/Bluhm-Alexander/CS313_Node_Js_Project.git (push)
