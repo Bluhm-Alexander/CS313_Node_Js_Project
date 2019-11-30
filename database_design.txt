@@ -14,4 +14,10 @@ heroku  https://git.heroku.com/lit-mountain-29464.git (push)
 origin  https://github.com/Bluhm-Alexander/CS313_Node_Js_Project.git (fetch)
 origin  https://github.com/Bluhm-Alexander/CS313_Node_Js_Project.git (push)
 
+this saves the information to packages.json
+npm install --save <package name>
+
 some stuff
+
+Using get is unsecure because you can very easily exit a query from a parsed url.
+Post 

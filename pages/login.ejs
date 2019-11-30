@@ -5,17 +5,21 @@
     </title>
 </head>
 <body>
-    <form action="welcome.php" method="post">
+    <!-- names are not selectable in jquery need to use ids -->
+    <form>
     <label for="username">User Name</label>
-    <input type="text" name="username"><br>
+    <input type="text" name="username" id="username"><br>
     <label for="password">Password</label>
-    <input type="password" name="password"><br>
-    <input type="submit">
+    <input type="password" name="password" id="password"><br>
+    <input type="button" id="login">
     </form>
+
+    <p id="errorMessage"></p>
+
     <script
-        src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
-    <script src="/public/login.js"></script>
+    <script src="/login.js"></script>
 </body>
 </html>
