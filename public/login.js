@@ -11,6 +11,7 @@ function login(event) {
     var username = $("#username").val();
     var password = $("#password").val();
     $.post("/login", {
+        // These are associated with the form IDs Jquery grabs them and passes them on as named variables
         username: username,
         password: password
     },
@@ -23,7 +24,7 @@ function login(event) {
                 $("#errorMessage").html(data);
             }
             else {
-                window.location = "/success";
+                window.location = "/mainPage";
             }
         }
     });

@@ -1,5 +1,6 @@
 const { Pool } = require('pg');
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
 
@@ -21,15 +22,17 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.set('views', path.join(__dirname, 'pages'))
 app.set('view engine', 'ejs')
 app.get('/', (req, res) => res.render('login'))
-app.get('/success', (req, res) => res.render('success'))
+app.get('/mainPage', (req, res) => res.render('mainPage'))
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(session({secret: 'NULL', saveUninitialized:true, resave: true})); // support for settions data
 
-//database functions
-
+// Global variable for session
+var sess;
 
 // Post handling for login
 app.post('/login', (req, res) => {
+  // store the information sent to us from the post into variables
   var username = req.body.username;
   var password = req.body.password;
   //A wild log has appeared
@@ -47,7 +50,9 @@ app.post('/login', (req, res) => {
         return;
     } else {
       //Send the user to the application page recipe page whatever
-      res.send("success");
+      res.send("success"); // Probably don't need this
+      sess = req.session;
+      sess.username = username;
       return;
     }
     res.status(200);
@@ -55,6 +60,12 @@ app.post('/login', (req, res) => {
 })
 })
 
+// When the main page is called return information important to the user
+// give the information in a JSON so we can pass it all at once
+app.get('/getUserInfo', (req, res) => {
+  res.setHeader('Content-type', 'text/plain');
+  res.send(sess.username);
+});
 
 app.get('/', function(req, res){
    res.send("Hello world!");
