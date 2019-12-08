@@ -1,0 +1,54 @@
+/* CSS Page */
+
+.container {
+	margin:				0 auto auto auto;
+	padding:			0;
+	width:			1000px;
+}
+
+.recipeBook {
+	height: 		700px;
+	/*border: 1px solid black;*/
+}
+
+.recipeBookHeader {
+	height:			60px;
+}
+
+#allRecipes {
+	width:			300px;
+	vertical-align: top;
+  	text-align: left;
+}
+
+.recipeButtons {
+	background-color: white; /* Green */
+	border: 2px solid #4CAF50;
+	color: black;
+	padding: 8px 10px;
+	width: 100%;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	-webkit-transition-duration: 0.4s; /* Safari */
+	transition-duration: 0.4s;
+	cursor: pointer;
+}
+
+.recipeButtons:hover {
+	background-color: #4CAF50;
+	color: white;
+}
+
+.recipeButtons:active {
+	background-color: rgb(42, 100, 44);
+	color: white;
+}
+
+#procedure {
+	width:			700px;
+	vertical-align: top;
+  	text-align: left;
+}

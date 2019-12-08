@@ -8,6 +8,7 @@ var app = express();
 
 //SQL Statements
 const passwordQuery = 'Select password from users where username = $1';
+const userRecipeQuery = 'Select recipe_name, directions, timer_length from recipes where user_id = (select user_id from users where username = $1)';
 
 
 //allocate new pool with url information for postgresql database
@@ -27,32 +28,70 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(session({secret: 'NULL', saveUninitialized:true, resave: true})); // support for settions data
 
+//Server Time Functions
+//Function order is important
+function logRequest(req, res, next) {
+// log all requests
+  //console.log("Received a request for: " + req.url);
+next();
+}
+
+app.use(logRequest)
+
+function verifyLogin(req, res, next) {
+if (req.session.username) {
+  //console.log(req.session.username);
+  next();
+} else {
+res.status(401);
+res.json({"success":false,
+"message":"Error: forbidden"});
+}
+}
+
+app.use('/getServerTime', verifyLogin) 
+
+app.get('/getServerTime', (req, res) => {
+  var time = new Date();
+  var respondWith = {
+  "success":true,
+  "time":time
+  };
+  return res.json(time);
+  })
+
 // Global variable for session
-var sess;
+// var sess;
 
 // Post handling for login
 app.post('/login', (req, res) => {
   // store the information sent to us from the post into variables
   var username = req.body.username;
   var password = req.body.password;
-  //A wild log has appeared
+  // DEV-NOTE: A wild log has appeared
   console.log(username, password);
   //Telling it what kind of content to expect in the response
-  res.setHeader('Content-type', 'text/plain');
+  //res.setHeader('Content-type', 'text/plain');
+  res.setHeader('Content-type', 'application/json');
   pool.query(passwordQuery, [username], (err, results) => {
     if (err) {
         throw err
     }
-    var respondWith = "error";
-    if (results.rows.length == 0) {
-      //just send the data with error have javascript handle where that error appears in page
-        res.send("Invalid Username or Password");
-        return;
-    } else {
+    var respondWith = {"success": true};
+    //var respondWith = "error";
+    if (results.rows[0]["password"] == password) {
       //Send the user to the application page recipe page whatever
-      res.send("success"); // Probably don't need this
-      sess = req.session;
-      sess.username = username;
+      //res.send("success"); // Probably don't need this
+      res.json({"success": true});
+      req.session.username = username;
+      req.session.save();
+      //sess.username = username;
+      return;
+    } 
+    else {
+      //just send the data with error have javascript handle where that error appears in page
+      //res.send("Invalid Username or Password");
+      res.json({"success": false});
       return;
     }
     res.status(200);
@@ -60,15 +99,56 @@ app.post('/login', (req, res) => {
 })
 })
 
+// Post handling for logout
+app.post('/logout', (req, res) => {
+  //Telling it what kind of content to expect in the response
+  //res.setHeader('Content-type', 'text/plain');
+  res.setHeader('Content-type', 'application/json');
+
+  if( req.session.username )
+  {
+    req.session.destroy();
+    res.json({"success": false});
+    return;
+  }
+  else
+  {
+    res.json({"success": true});
+    return;
+  }
+})
+
 // When the main page is called return information important to the user
 // give the information in a JSON so we can pass it all at once
 app.get('/getUserInfo', (req, res) => {
   res.setHeader('Content-type', 'text/plain');
-  res.send(sess.username);
+  res.send(req.session.username);
 });
 
-app.get('/', function(req, res){
-   res.send("Hello world!");
+/*********************************************************************************
+ *    FUNCTION: /getUserRecipes
+ *      
+ ********************************************************************************/
+app.get('/getUserRecipes', (req, res)=> {
+  res.setHeader('Content-type', 'application/json');
+
+  //Query database for all recipes related to a user
+  pool.query(userRecipeQuery, [req.session.username], (err, results) => {
+    if (err) {
+        throw err
+    }
+    var allRecipes = [];
+    for( var i = 0; i < results.rows.length; i++ )
+    {
+      //allRecipes.push( {recipe_name: results.rows[i]["recipe_name"]} );
+      allRecipes.push( {recipe_name: results.rows[i]["recipe_name"], directions: results.rows[i]["directions"], timer_length: results.rows[i]["timer_length"]} );
+      //allRecipes.push( {directions: results.rows[i]["directions"]} );
+      //allRecipes.push( {timer_length: results.rows[i]["timer_length"]} );
+    }
+    
+    
+    res.json( allRecipes );
+  });
 });
 
 let port = process.env.PORT;

@@ -3,14 +3,31 @@
     <title>
         Recipe Application Main Page
     </title>
+    <link rel="stylesheet" type="text/css" href="/mainpage.css">
 </head>
 <body>
+
+<div class="container">
     <h1>Successful Login</h1>
     <p>You are logged in as: <span id="currentUser"></span></p>
-    <script
-        src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous"></script>
-    <script src="/mainPage.js"></script>
+    <input type="button" id="logout" value="Logout">
+    <p id="errorMessage"></p>
+    <table border="1" class="recipeBook">
+        <tr class="recipeBookHeader">
+            <th>Your Recipes</th>
+            <th>Procedure</th>
+        </tr>
+        <tr>
+            <td id="allRecipes">You have No Recipes In The Database</td>
+            <td id="procedure">No Recipe Selected</td>
+        </tr>
+    </table>
+</div>
+
+<script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+<script src="/mainPage.js"></script>
 </body>
 </html>
