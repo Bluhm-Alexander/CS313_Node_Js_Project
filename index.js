@@ -8,7 +8,11 @@ var app = express();
 
 //SQL Statements
 const passwordQuery = 'Select password from users where username = $1';
-const userRecipeQuery = 'Select recipe_name, directions, timer_length from recipes where user_id = (select user_id from users where username = $1)';
+const userRecipeQuery = 'Select recipe_id, recipe_name, directions, timer_length from recipes where user_id = (select user_id from users where username = $1)';
+const insertRecipe = 'INSERT INTO recipes (user_id, recipe_name, directions, timer_length) VALUES ((SELECT user_id FROM users WHERE username = $1 ), $2, $3, $4)';
+const deleteRecipe = 'DELETE FROM recipes WHERE recipe_id = $1';
+const signUp = 'INSERT INTO users (first_name, last_name, username, password) VALUES ($1, $2, $3, $4)';
+const userCheck = 'SELECT username FROM users WHERE username = $1';
 
 
 //allocate new pool with url information for postgresql database
@@ -24,6 +28,8 @@ app.set('views', path.join(__dirname, 'pages'))
 app.set('view engine', 'ejs')
 app.get('/', (req, res) => res.render('login'))
 app.get('/mainPage', (req, res) => res.render('mainPage'))
+app.get('/addRecipe', (req, res) => res.render('addRecipe'))
+app.get('/signUp', (req, res) => res.render('signUp'))
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(session({secret: 'NULL', saveUninitialized:true, resave: true})); // support for settions data
@@ -99,6 +105,78 @@ app.post('/login', (req, res) => {
 })
 })
 
+/***********************************************************************
+ * Post handling for addRecipe
+ * ********************************************************************/
+app.post('/addRecipe', (req, res) => {
+  // store the information sent to us from the post into variables
+  var newRecipeName = req.body.newRecipeName;
+  var newRecipe = req.body.newRecipe;
+  var defaultTimer = 0;
+  //Telling it what kind of content to expect in the response
+  //res.setHeader('Content-type', 'text/plain');
+  res.setHeader('Content-type', 'application/json');
+  pool.query(insertRecipe, [req.session.username, newRecipeName, newRecipe, defaultTimer], (err, results) => {
+    if (err) {
+        throw err
+    }
+    res.json({"success": true});
+})
+})
+
+/***********************************************************************
+ * Post handling for SignUp
+ * ********************************************************************/
+app.post('/signUp', (req, res) => {
+  // store the information sent to us from the post into variables
+  var first_name = req.body.first_name;
+  var last_name = req.body.last_name;
+  var username = req.body.username;
+  var password = req.body.password;
+  
+  var isUnique = false;
+
+  pool.query(userCheck, [username], (err, results) => {
+    if( results.rows[0]["username"] == username ) {
+      isUnique = false;
+    }
+    else {
+      isUnique = true;
+    }
+  })
+
+  res.setHeader('Content-type', 'application/json');
+
+  if( isUnique ) {
+    pool.query(signUp, [first_name, last_name, username, password], (err, results) => {
+      if (err) {
+          throw err
+      }
+      res.json({"success": true});
+    })
+  }
+  else {
+    res.json({"success": false});
+  }
+})
+
+/***********************************************************************
+ * Post handling for deleteRecipe
+ * ********************************************************************/
+app.post('/deleteRecipe', (req, res) => {
+  // store the information sent to us from the post into variables
+  var recipeId = req.body.recipeId;
+  //Telling it what kind of content to expect in the response
+  //res.setHeader('Content-type', 'text/plain');
+  res.setHeader('Content-type', 'application/json');
+  pool.query(deleteRecipe, [recipeId], (err, results) => {
+    if (err) {
+        throw err
+    }
+    res.json({"success": true});
+})
+})
+
 // Post handling for logout
 app.post('/logout', (req, res) => {
   //Telling it what kind of content to expect in the response
@@ -140,10 +218,7 @@ app.get('/getUserRecipes', (req, res)=> {
     var allRecipes = [];
     for( var i = 0; i < results.rows.length; i++ )
     {
-      //allRecipes.push( {recipe_name: results.rows[i]["recipe_name"]} );
-      allRecipes.push( {recipe_name: results.rows[i]["recipe_name"], directions: results.rows[i]["directions"], timer_length: results.rows[i]["timer_length"]} );
-      //allRecipes.push( {directions: results.rows[i]["directions"]} );
-      //allRecipes.push( {timer_length: results.rows[i]["timer_length"]} );
+      allRecipes.push( {recipe_id: results.rows[i]["recipe_id"], recipe_name: results.rows[i]["recipe_name"], directions: results.rows[i]["directions"], timer_length: results.rows[i]["timer_length"]} );
     }
     
     

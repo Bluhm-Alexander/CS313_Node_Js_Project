@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>
-        Recipe Application Login Page
+        Recipe Application Sign Up Page
     </title>
     <link rel="stylesheet" type="text/css" href="/mainpage.css">
 </head>
@@ -9,23 +9,26 @@
     <!-- names are not selectable in jquery need to use ids -->
     <div class="container">
         <div class="pageHeader">
-            Recipe Book Login
+            Recipe Book Sign Up
         </div>
 
         <div align="right">
-            <input type="button" class="addRecipeButton" style="margin-bottom: 60px;" id="createUser" value="Sign Up">
+            <input type="button" class="addRecipeButton" style="margin-bottom: 60px;" id="backToLogin" value="Back To Login">
         </div>
 
         <div class="loginBox">
-            <h3 style="text-align: center;">Login</h3>
+            <h3 style="text-align: center;">Sign Up</h3>
             <div class="innerLoginBox">
                 <form>
                     <label for="username">User Name</label><br>
                     <input type="text" name="username" id="username" value=""><br>
                     <label for="password">Password</label><br>
                     <input type="password" name="password" id="password" value=""><br>
-                    <input type="button" class="addRecipeButton" id="login" value="Login">
-                    <input type="button" class="addRecipeButton" id="logout" value="Logout">
+                    <label for="first_name">First Name</label><br>
+                    <input type="text" name="first_name" id="first_name" value=""><br>
+                    <label for="last_name">Last Name</label><br>
+                    <input type="text" name="last_name" id="last_name" value=""><br>
+                    <input type="button" class="addRecipeButton" id="signup" value="Sign Up">
                 </form>
             </div>
         </div>
@@ -37,6 +40,6 @@
         src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
-    <script src="/login.js"></script>
+    <script src="/signUp.js"></script>
 </body>
 </html>

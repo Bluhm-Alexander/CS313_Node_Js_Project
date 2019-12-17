@@ -1,0 +1,106 @@
+<html>
+<head>
+    <title>
+        Recipe Application Add Recipe
+    </title>
+    <link rel="stylesheet" type="text/css" href="/mainpage.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="pageHeader">
+        Add Recipe
+    </div>
+
+    <div style="width: 100%;">
+        <table align="right">
+            <tr>
+                <td>
+                    <input type="button" class="addRecipeButton" id="recipe-view" value="Recipe Viewer">
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <button class="userDropDown"><img src="user_emblem.png" width="30" height="30">&nbsp;<span id="currentUser"></span></button>
+                            <div class="dropdown-content" style="left:0;">
+                            <a href="" id="logout">Logout</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <form>
+        <table border="0" style="width: 100%;">
+            <tr>
+                <td>
+                    <h1><label for="recipe-name">Recipe Name</label></h1>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" name="recipe-name" id="recipe-name" value="" size="100"><br>
+                </td>
+            </tr>
+        </table>
+
+        <div class="seperator"></div>
+
+        <h2>Ingredients</h2>
+
+        <table border="0" style="width: 100%;" id="ingredients-table">
+            <tr>
+                <td>
+                    <label for="ingredients1">Ingredient 1</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" name="ingredients1" id="ingredients1" value="" size="100">
+                </td>
+            </tr>
+        </table>
+
+        <div align="right">
+            <input type="button" class="addRecipeButton" id="add-ingredient" value="Add Ingredient">
+        </div>
+
+        <div class="seperator"></div>
+
+        <h2>Instructions</h2>
+
+        <table border="0" style="width: 100%;" id="instructions-table">
+            <tr>
+                <td>
+                    <label for="step1">Step 1</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" name="step1" id="step1" value="" size="100">
+                </td>
+            </tr>
+        </table>
+
+        <div align="right">
+            <input type="button" class="addRecipeButton" id="add-step" value="Add Step">
+        </div>
+
+        <input type="button" class="addRecipeButton" id="save-recipe" value="Save Recipe">
+
+    </form>
+
+</div>
+
+<script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+<script src="/addRecipe.js"></script>
+</body>
+</html>

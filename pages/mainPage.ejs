@@ -8,11 +8,33 @@
 <body>
 
 <div class="container">
-    <h1>Successful Login</h1>
-    <p>You are logged in as: <span id="currentUser"></span></p>
-    <input type="button" id="logout" value="Logout">
+    <div class="pageHeader">
+        Recipe Viewer
+    </div>
+
+    <div style="width: 100%;">
+        <table align="right" border="0">
+            <tr>
+                <td><input type="button" class="addRecipeButton" id="deleteRecipe" value="Delete Recipe"></td>
+                <td><input type="button" class="addRecipeButton" id="addRecipe" value="Add Recipe"></td>
+                <td>
+                    <div class="dropdown">
+                        <button class="userDropDown"><img src="user_emblem.png" width="30" height="30">&nbsp;<span id="currentUser"></span></button>
+                            <div class="dropdown-content" style="left:0;">
+                            <a href="" id="logout">Logout</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <br>
+    <br>
+    <br>
+
     <p id="errorMessage"></p>
-    <table border="1" class="recipeBook">
+    <table border="0" class="recipeBook">
         <tr class="recipeBookHeader">
             <th>Your Recipes</th>
             <th>Procedure</th>
